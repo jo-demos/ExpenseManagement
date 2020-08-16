@@ -1,0 +1,17 @@
+{
+  "sqltools.connections": [
+    {
+      "askForPassword": true,
+      "database": "ExpenseManagement",
+      "driver": "MySQL",
+      "mysqlOptions": {
+        "authProtocol": "default"
+      },
+      "name": "db",
+      "port": 3307,
+      "previewLimit": 50,
+      "server": "localhost",
+      "username": "root"
+    }
+  ]
+}

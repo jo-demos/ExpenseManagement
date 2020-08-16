@@ -19,6 +19,7 @@ namespace ExpenseManagement.Controllers
         }
 
         // GET: TipoDespesa
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             return View(await _context.TiposDespesa.ToListAsync());
@@ -33,6 +34,25 @@ namespace ExpenseManagement.Controllers
             }
 
             return View(await _context.TiposDespesa.ToListAsync());
+        }
+
+        public JsonResult AdicionarTipoDespesa(string despesa)
+        {
+            if (!String.IsNullOrWhiteSpace(despesa))
+            {
+                if (!_context.TiposDespesa.Any(t => string.Equals(t.Nome, despesa, StringComparison.OrdinalIgnoreCase)))
+                {
+                    _context.Add(new TipoDespesa()
+                    {
+                        Nome = despesa
+                    });
+                    _context.SaveChanges();
+
+                    return Json(true);
+                }
+            }
+
+            return Json(false);
         }
 
         // GET: TipoDespesa/Create

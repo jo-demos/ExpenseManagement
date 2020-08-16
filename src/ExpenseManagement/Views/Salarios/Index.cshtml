@@ -1,22 +1,24 @@
-@model IEnumerable<ExpenseManagement.Models.TipoDespesa>
+@model IEnumerable<ExpenseManagement.Models.Salario>
 
 @{
-    ViewData["Title"] = "Tipos de despesas cadastradas";
+    ViewData["Title"] = "Salários cadastrados";
 }
 
 <div class="tabela">
     <div class="container">
         <h6>@ViewData["Title"]</h6>
-        <p>
+        <p class="btnNovo">
             <a asp-action="Create" class="btn btn-outline-primary btn-sm">Incluir</a>
         </p>
 
         @if (TempData["Confirmacao"] != null)
         {
-            <h6 class="alert alert-success">@TempData["Confirmacao"]</h6>
+            <h6 class="alert alert-success">
+                @TempData["Confirmacao"]
+            </h6>
         }
-        
-        <form asp-action="Index" asp-controller="TipoDespesas" method="POST">
+
+        <form asp-action="Index" asp-controller="Salarios" method="POST">
             <div class="form-group">
                 <div class="input-group col-md-6">
                     <input class="form-control" name="procurar" />
@@ -27,27 +29,33 @@
             </div>
         </form>
 
-        <table class="table table-hover">
+        <table class="table">
             <thead>
                 <tr>
                     <th>
-                        @Html.DisplayNameFor(model => model.Nome)
+                        @Html.DisplayNameFor(model => model.Valor)
                     </th>
-                    <th>Opções</th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Mes)
+                    </th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model) {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Nome)
-                        </td>
-                        <td>
-                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-info btn-sm">Alterar</a> |
-                            <a class="btn btn-outline-danger btn-sm" onclick="exibirModal(@item.Id, '@item.Nome')">Excluir</a>
-                        </td>
-                    </tr>
-                }
+            @foreach (var item in Model) {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Valor)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Mes.Nome)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-info btn-sm">Atualizar</a> |
+                        <a onclick="exibirModal(@item.Id)" class="btn btn-outline-danger btn-sm">Excluir</a>
+                    </td>
+                </tr>
+            }
             </tbody>
         </table>
     </div>
@@ -63,7 +71,7 @@
             </button>
         </div>
         <div class="modal-body">
-            <p>Deseja prosseguir com a exclusão de <span class="nome"></span>?</p>
+            <p>Deseja prosseguir com a exclusão do salário?</p>
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-outline-danger btnDelete">Sim</button>
@@ -75,14 +83,12 @@
 
 @section Scripts{
     <script>
-        function exibirModal(id, nome) {
-            $(".nome")[0].innerHTML = nome;
-
+        function exibirModal(id) {
             $(".modal").modal();
 
             $(".btnDelete").on("click", function() {
                 $.ajax({
-                    url: "TipoDespesas/Delete",
+                    url: "Salarios/Delete",
                     method: "POST",
                     data: { id },
                     success: function(data) {
