@@ -25,8 +25,16 @@ namespace ExpenseManagement
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            string conn = Configuration.GetConnectionString("DefaultConnection");
-            services.AddDbContext<Contexto>(options => options.UseMySql(conn));
+            string connectionBase = Configuration.GetConnectionString("DefaultConnection");
+            string host = Configuration["DBHOST"];
+            string port = Configuration["DBPORT"];
+            string db = Configuration["DBNAME"];
+            string user = Configuration["DBUSER"];
+            string pwd = Configuration["DBPASSWORD"];
+
+            string connection = String.Format(connectionBase, host, port, db, user, pwd);
+            Console.WriteLine(connection);
+            services.AddDbContext<Contexto>(options => options.UseMySql(connection));
 
             services.AddControllersWithViews();
         }

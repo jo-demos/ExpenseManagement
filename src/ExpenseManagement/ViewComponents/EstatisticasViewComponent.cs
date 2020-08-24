@@ -17,11 +17,14 @@ namespace ExpenseManagement.ViewComponents
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            EstatisticasViewModel estatisticas = new EstatisticasViewModel()
+            int count = _Context.Despesas.Count();
+            EstatisticasViewModel estatisticas = new EstatisticasViewModel();
+
+            if (count > 0)
             {
-                MenorDespesa = _Context.Despesas.Min(d => d.Valor),
-                MaiorDespesa = _Context.Despesas.Max(d => d.Valor),
-                QtdeDespesas = _Context.Despesas.Count()
+                estatisticas.MenorDespesa = _Context.Despesas.Min(d => d.Valor);
+                estatisticas.MaiorDespesa = _Context.Despesas.Max(d => d.Valor);
+                estatisticas.QtdeDespesas = count;
             };
 
             return View(estatisticas);
